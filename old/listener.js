@@ -23,23 +23,33 @@ server.bind(PORT, HOST);
 ///////////////////////////
 const web3 = require('web3')
 const secp256k1 = require('secp256k1')
-const wallet = require('./wallet.js')
 
 // authentication scheme
 function parseData(data) {
     let d = data.toString('utf8').replace('\n', '')
     
-    let verified;
-    let decoded;
-    let from;
-    [verified, decoded, from] = wallet.getStringFromSerializedTx(d);
-    
     /////// hack ///////
     //parse input  
-    var a = decoded.split("-");
+    var a = d.split("-");
     var pardon_hash = a[0]
     var vote = a[1]
-        
+    var voter_pub_key = a[2]
+    var sig = a[3]
+    
+    //// retrieve public key and signatures as buffer objects
+    var pubKey = Buffer.from(JSON.parse(voter_pub_key).data);  
+    var sig = Buffer.from(JSON.parse(sig).data);
+
+    //// re-assemble unsigned msg 
+    var unsignedMsg = a[0].concat("-").concat(a[1]).concat("-").concat(a[2])
+
+    //// also on receiver side the msg is hashed before verification 
+    var sha3msg = (web3.utils.sha3(unsignedMsg)).slice(2)
+    const msg = Buffer.from(sha3msg, 'hex')
+
+    //// verify message 
+    const verified = secp256k1.verify(msg,sig,pubKey)
+    
     //// incerment the authenticated vote 
     if (verified) {
         votes[vote]++
@@ -49,7 +59,8 @@ function parseData(data) {
     voteParsedData = {
     	"pardon_hash":pardon_hash,
   	  	"vote":vote,
-  	  	"from":from,
+  	  	"voter_pub_key":voter_pub_key,
+  	  	"sig":sig,
   	  	"verified":verified
 	}
 

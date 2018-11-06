@@ -1,11 +1,8 @@
 const { randomBytes } = require('crypto')
 const secp256k1 = require('secp256k1')
 const web3 = require('web3')
-const wallet = require('./wallet.js')
 
 /////////////////////////////////
-
-//const privateKey = Buffer.from('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
 
 // generate privKey
 let privKey
@@ -17,8 +14,21 @@ do {
 const pubKey = secp256k1.publicKeyCreate(privKey)
 
 // we send all buffer types as json string
-const myString = "dochash-yes"
-const data = wallet.getSerializedTx(privKey, myString)
+const str2 = JSON.stringify(pubKey)
+const unsignedMsg = "dochash-yes-".concat(str2)
+
+// as in ethereum, sha3 is done on the unsigned msg before signing and validating
+const sha3msg = (web3.utils.sha3(unsignedMsg)).slice(2)
+const msg = Buffer.from(sha3msg, 'hex');
+ 
+// sign the message
+const sigObj = secp256k1.sign(msg, privKey)
+	
+// also the signature is buffer is transmitted as a json string
+const str3 = JSON.stringify(sigObj.signature)
+
+// final format to send is unsigned msg (including sender public key) + signature
+data = unsignedMsg.concat("-").concat(str3)
 
 /////////////////////////////////
 

@@ -12,7 +12,7 @@ BOOTSTRAP_IP=$(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPA
 sudo docker logs --tail 20 bootstrap | grep 'identity'
 #SUPERCMD="sudo docker run -p 9090 -e BOOTPARAMS='--swarm-bootstrap --swarm-bootstrap-nodes ${BOOTSTRAP_IP}:7513/${BOOTSTRAP_NODEID}' spacemesh_p2p"
 
-for i in {1..3};do
+for i in {1..5};do
 	sleep 1	
 	sudo docker run -d -p 9090 -e BOOTPARAMS='--bootstrap --bootnodes '"${BOOTSTRAP_IP}"':7513/'"${BOOTSTRAP_NODEID}"'' spaceanton/spacemesh:spacemesh_p2p
 done
