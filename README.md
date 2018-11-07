@@ -7,7 +7,7 @@ Decentralized p2p education in a self-severeign identity system.
 As nations move toward self-severign identity (SSI) management, such systems usually use public blockchains, namely ethereum.
 We propose to use the benefits of a public blockchain keypair, identity and kyc management in community p2p networks.
 
-Dedu implements a protocol for a community to manage it's education system (curriculum, timelines, vacations) in a a decentralized manner.
+Dedu implements a protocol for a community to manage it's education system (curriculum, timelines, vacations) in a decentralized manner.
 Each participant is authenticated in the p2p network using his public blockchain identity and certifications.
 The local network communication is private and fee-less as opposed to public blockchains such as ethereum.
 
