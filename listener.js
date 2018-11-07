@@ -1,3 +1,10 @@
+var args = process.argv.slice(2);
+
+let skipParse = false
+if (args[0] == "skipParse") {
+	skipParse = true
+}
+
 let votes = {"yes":0, "no":0}
 
 /////////////////////////////
@@ -15,9 +22,12 @@ server.on('listening', function () {
 
 server.on('message', function (message, remote) {
     console.log(remote.address + ':' + remote.port +' - ' + message);
-    console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre!")
-    //tmp removal
-    //parseData(message)
+    
+    if (!skipParse) {
+    	parseData(message);
+    } else {
+        console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre!")
+    }
 });
 
 server.bind(PORT, HOST);

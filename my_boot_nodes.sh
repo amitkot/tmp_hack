@@ -14,7 +14,7 @@ sudo docker logs --tail 20 bootstrap | grep 'identity'
 
 for i in {1..5};do
 	sleep 1	
-	sudo docker run -d -p 9090 -e BOOTPARAMS='--swarm-bootstrap --swarm-bootstrap-nodes '"${BOOTSTRAP_IP}"':7513/'"${BOOTSTRAP_NODEID}"'' hack
+	sudo docker run -d -p 9090 -e BOOTPARAMS='--bootstrap --bootnodes '"${BOOTSTRAP_IP}"':7513/'"${BOOTSTRAP_NODEID}"'' hack
 done
 
 sleep 4
