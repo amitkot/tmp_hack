@@ -15,7 +15,9 @@ server.on('listening', function () {
 
 server.on('message', function (message, remote) {
     console.log(remote.address + ':' + remote.port +' - ' + message);
-    parseData(message)
+    console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre!")
+    //tmp removal
+    //parseData(message)
 });
 
 server.bind(PORT, HOST);
