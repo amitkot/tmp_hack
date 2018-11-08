@@ -31,7 +31,7 @@ module.exports.getStringFromSerializedTx = function(serializedTx) {
 	console.log("from", from)
 	const decData = reTx.toJSON()[5]
 	const decoded = new Buffer(decData.slice(2), 'hex').toString(); // decoded === "Thi
-	console.log(decoded)
+	//console.log(decoded)
 	
 	return [verified, decoded, from]
 }

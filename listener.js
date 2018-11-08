@@ -5,7 +5,15 @@ if (args[0] == "skipParse") {
 	skipParse = true
 }
 
-let votes = {"yes":0, "no":0}
+let votes = {"13807fb779cb8b83e4e1a39b4792f717fee6b1b2": "undecided",
+			 "de7882bf20a1ca504422d87fda87ba0e78f6aca1": "undecided",
+			 "6012b2ff767b5d78299e215f78ad79383b8c7b95": "yes",
+			 "ce7b775acc052ad1f2f6912c0038db8417e5de81": "yes",
+			 "df7c4efc5cdef37e72402ca8c7ba691986dbf9a9": "yes"}
+let totalYesVotes = 3
+let totalNoVotes = 0
+var TOTAL_NUM_NODES = 5
+var MAJORITY_NEEDED = 4 //round_up((2/3)*TOTAL_NUM_NODES
 
 /////////////////////////////
 var dgram = require('dgram');
@@ -49,23 +57,36 @@ function parseData(data) {
     /////// hack ///////
     //parse input  
     var a = decoded.split("-");
-    var pardon_hash = a[0]
+    var docHash = a[0]
     var vote = a[1]
         
     //// incerment the authenticated vote 
     if (verified) {
-        votes[vote]++
+        votes[from] = vote
     }
     
     //// return (for printing) the relevant data
     voteParsedData = {
-    	"pardon_hash":pardon_hash,
+    	"docHash":docHash,
   	  	"vote":vote,
   	  	"from":from,
   	  	"verified":verified
 	}
 
-	console.log(voteParsedData)
-	console.log(votes)
-    /////// end of hack /////// 
+	console.log("current vote:\n", voteParsedData)
+	console.log("total votes status:\n", votes)
+	
+	// count total votes
+	if (vote == "yes") {
+		totalYesVotes++;
+	}
+	else if (vote == "no") {
+		totalNoVotes++;
+	}
+	
+    if((totalYesVotes >= MAJORITY_NEEDED) || (totalNoVotes >= MAJORITY_NEEDED)) {
+    	console.log("**************************************")
+    	console.log("reached consensus!!! ".concat(vote).concat(" for ").concat(docHash))
+    	console.log("**************************************")
+    }
 }
