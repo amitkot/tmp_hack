@@ -54,7 +54,7 @@ e.g. with `VALIDATOR_ID` of 172.17.0.3 and `MASTER_IP` being 172.17.0.2:
 
     wget -O- --post-data='{"carPlate": "-", "block": {"data": "SOME INTERESTING DATA"}}' --header=Content-Type:application/json "http://MASTER_ID:3002/createBlock"
 
-e.g. with MASTER_IP of 172.17.0.2: 
+e.g. with `MASTER_IP` of 172.17.0.2: 
 
     wget -O- --post-data='{"carPlate": "-", "block": {"data": "SOME INTERESTING DATA"}}' --header=Content-Type:application/json "http://172.17.0.2:3002/createBlock"
 
